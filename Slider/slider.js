@@ -29,6 +29,7 @@ const resetBg = () => {
     });
 };
 
+//function for bottom round buttons
 
 buttons.forEach((button, i)=>{
     button.addEventListener("click", () => {
@@ -39,6 +40,8 @@ buttons.forEach((button, i)=>{
     });
 });
 
+
+//functions for changing the slides 
 
 const nextSlide = () => {
     slider.style.transform = `translateX(-${slideNumber * 800}px)`;
@@ -67,13 +70,13 @@ const changeColor = () => {
     buttons[slideNumber - 1].style.backgroundColor = `blue`;
 };
 
-// Function for right arrow 
+// Function for right arrow
 rightArrow.addEventListener("click", ()=>{
     if(slideNumber < length){
         nextSlide()
     } else{
         goToFirstSlide()
-    } 
+    }
     changeColor();
 });
 
@@ -86,10 +89,3 @@ leftArrow.addEventListener("click", ()=>{
     }
     changeColor();
 });
-
-
-
-
-
-
-
