@@ -46,7 +46,7 @@ const data = [
 
 const productsContainer = document.querySelector(".products")
 const searchInput = document.querySelector(".search")
-const categories = document.querySelector(".categories")
+const categoriesContainer = document.querySelector(".categories")
 const priceRange = document.querySelector(".priceRange")
 const priceValue = document.querySelector(".priceValue")
 
@@ -65,3 +65,62 @@ const displayProducts = (filterProducts) => {
 };
 
 displayProducts(data);
+
+
+searchInput.addEventListener("keyup", (e) => {
+  const value = (e.target.value).toLowerCase();
+
+  if(value){
+    displayProducts(data.filter(item => item.name.toLocaleLowerCase().indexOf(value) !== -1))
+  } else{
+    displayProducts(data);
+  }
+});
+
+
+const setCategories = () => {
+  const allCats = data.map(item => item.cat)
+  const categories = [
+    "All",
+  ...allCats.filter((item, i)=>{
+    return allCats.indexOf(item) === i
+  }),
+];
+
+categoriesContainer.innerHTML = categories.map(cat => 
+  `
+  <span class="cat">${cat}</span>
+  `
+  ).join("");
+
+  categoriesContainer.addEventListener("click", (e) => {
+    const selectedCategory = e.target.textContent;
+
+    if(selectedCategory === "All"){
+      displayProducts(data);
+    } else{
+      displayProducts(data.filter(item => item.cat === selectedCategory))
+    }
+
+  });
+};
+
+
+const setPrices = () => {
+  const priceList = data.map(item => item.price);
+  const priceMin = Math.min(...priceList);
+  const priceMax = Math.max(...priceList);
+
+  priceRange.min = priceMin;
+  priceRange.max = priceMax;
+  priceRange.value = priceMax;
+  priceValue.textContent = "$" + priceMax;
+
+  priceRange.addEventListener("input", (e) => {
+    priceValue.textContent = "$" + e.target.value;
+    displayProducts(data.filter(item => item.price <= e.target.value))
+  })
+};
+
+setCategories();
+setPrices();
